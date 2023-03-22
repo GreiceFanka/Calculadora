@@ -3,11 +3,16 @@ package visao;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import modelo.Memoria;
+
 @SuppressWarnings("serial")
-public class Teclado extends JPanel{
+public class Teclado extends JPanel implements ActionListener{
 	private final Color CINZA_ESCURO = new Color(68,68,68);
 	private final Color CINZA_CLARO = new Color(99,99,99);
 	private final Color LARANJA = new Color(242,163,60);
@@ -22,8 +27,9 @@ public class Teclado extends JPanel{
 		cons.weightx = 1;
 		cons.weighty = 1;
 		
+		cons.gridwidth = 2;
 		adicionarBotao("AC",CINZA_ESCURO,cons,0,0);
-		adicionarBotao("+/-",CINZA_ESCURO,cons,1,0);
+		cons.gridwidth = 1;
 		adicionarBotao("%",CINZA_ESCURO,cons,2,0);
 		adicionarBotao("/",LARANJA,cons, 3, 0);
 		
@@ -53,6 +59,14 @@ public class Teclado extends JPanel{
 		cons.gridx = x;
 		cons.gridy = y;
 		Botao botao = new Botao(texto,cor);
+		botao.addActionListener(this);
 		add(botao,cons);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() instanceof JButton) {
+			JButton botao = (JButton) e.getSource();
+			Memoria.getInstancia().processarComando(botao.getText());
+		}
 	}
 }
